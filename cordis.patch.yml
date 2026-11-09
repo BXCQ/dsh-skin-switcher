@@ -1,0 +1,8 @@
+# Skin Switcher — bundle patch.
+#
+# One Host row; the visible half is the Client module declared by
+# `dsh.client` in package.json, which registers the sidebar panel icon,
+# the main panel, and the theme-token / stylesheet layers.
+- insert:
+    - id: dsh-skin-switcher
+      name: '@local/dsh-skin-switcher'

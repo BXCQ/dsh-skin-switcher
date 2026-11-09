@@ -1,0 +1,34 @@
+{
+  "name": "@local/dsh-skin-switcher",
+  "version": "1.3.0",
+  "private": true,
+  "description": "A left-sidebar panel that switches the whole Harness interface between eleven visual styles — five classic skins including pixel-art, the early-QQ retro skin, five gradient skins; the gradient skins also paint the right dock and floating document windows so a translucent page base cannot show text through them.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BXCQ/dsh-skin-switcher.git"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}
+
