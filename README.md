@@ -2,13 +2,19 @@
 
 给 DeepSeek Harness Web/GUI 加一个**左侧边栏图标**，点开即是一面「风格墙」：十一种整体视觉风格，一键切换，全应用生效。
 
+零依赖：`client.js` 只用 Harness 注入的 `React` / `ctx` / `styles` / `theme`。
+
 ## 安装
 
 ```bash
 dsh plugin --profile desktop add git+https://github.com/BXCQ/dsh-skin-switcher.git
 ```
 
-装完刷新页面（F5），左侧边栏会出现调色板图标。也可以把仓库 clone 到本地，在插件管理器里填该目录的绝对路径。
+装上后刷新页面（F5），左侧边栏出现调色板图标。
+
+- `github.com:443` 被网络阻断时，改用 SSH 形式：`git+ssh://git@github.com/BXCQ/dsh-skin-switcher.git`。
+- 也可以 clone 到本地，在插件管理器里填该目录的**绝对路径**。
+- 卸载见文末。
 
 ## 十一种风格
 
@@ -35,50 +41,6 @@ dsh plugin --profile desktop add git+https://github.com/BXCQ/dsh-skin-switcher.g
 3. 点「默认外观」还原。
 4. 选择会持久化：同时写入 `localStorage` 与 `dsh_skin` Cookie。Cookie 按主机名（不分端口）作用域，所以即使 DSH 每次启动换端口，偏好也不会丢。
 
-## 分享给别人
-
-本插件零依赖（`client.js` 只用 Harness 注入的 `React` / `ctx` / `styles` / `theme`），整包解压后可直接被插件管理器安装。安装目标就是 **`pnpm add` 认的 spec**：本地目录、本地 `.tgz`、`git+https://…`、注册表包名，四种都行。
-
-### 1. 直接发文件（最快）
-
-`dist/dsh-skin-switcher-1.3.0.zip`（解压得到一个 `dsh-skin-switcher/` 目录）或 `dist/local-dsh-skin-switcher-1.3.0.tgz`。对方解压后二选一：
-
-- 「插件」页的安装框填该目录的**绝对路径**；
-- 或命令行：`dsh plugin --profile desktop add D:\path\to\dsh-skin-switcher`（tgz 同理，换成 tgz 绝对路径）。
-
-装完会在对方 profile 里生成 `link:` 依赖，刷新页面即出现侧边栏图标。
-
-### 2. 放 GitHub，用 git 地址安装
-
-```bash
-cd D:\Projects\personal\deepseek-harness\dsh-skin-switcher
-git init && git add . && git commit -m "dsh-skin-switcher 1.3.0"
-git remote add origin https://github.com/BXCQ/dsh-skin-switcher.git && git push -u origin main
-```
-
-对方：`dsh plugin --profile desktop add git+https://github.com/BXCQ/dsh-skin-switcher.git`
-
-> 若 github.com:443 被网络阻断（国内常见），改用 SSH 形式：git+ssh://git@github.com/BXCQ/dsh-skin-switcher.git（对方需在 GitHub 配好 SSH key）；本仓库就是用 SSH 推送验证过的。
-
-`@local/…` 这个包名走 git/目录安装完全没问题；只有发 npm 才需要换成公开名（见下）。
-
-### 3. 发 npm（需要换名）
-
-`dsh-skin-switcher` 这个名字**已被别人占用**（v0.4.0，作者 zhtx2026，是另一个插件），所以要用 scope 或改名：
-
-1. `package.json`：`name` 改成 `@<你的npm用户名>/dsh-skin-switcher`，删掉 `"private": true`，加 `"publishConfig": { "access": "public" }`；
-2. `cordis.patch.yml` 里 insert 的 `name` **必须同步改**（它要和包名一致），`client.js` 里的 `PACKAGE_ID` 只是覆盖层来源标识，可不动；
-3. `npm publish`。
-
-对方：`dsh plugin --profile desktop add @<你的npm用户名>/dsh-skin-switcher`，或在插件页填同一个 spec。
-
-### 4. 上架插件目录（可选）
-
-- **自定义索引源**：插件市场只认 **JSON 索引（format 1）**，文件需 https 可达；在「插件」页启用实验性插件「自定义插件索引」，再到 Plugins → 发现 → 索引源里加自己的 URL。索引项的图标按索引 URL 相对解析，内联图标上限 32 KiB。
-- **社区目录**：`awesome-dsh-plugin` 仓库（npm 包 `dsh-plugin-catalog`，jsDelivr 同步）接受 PR 加一条条目，插件市场和官网会自动收录。
-
-两种索引格式的字段规范以官方文档为准，本仓库不代替它。
-
 ## 实现方式（为什么不会破坏原生主题）
 
 - 颜色走 Client `theme` 服务的 **token 覆盖层**：`theme.overrideTokens('@local/dsh-skin-switcher', tokens)`。
@@ -103,7 +65,6 @@ locale/en.json        # 商店/插件列表里显示的标题与描述（英文�
 locale/zh.json        # 同上（中文）
 icon.svg              # 原创 64×64 调色板图标
 test/harness.mjs      # 无浏览器集成测试（见下）
-dist/                 # 分发产物：dsh-skin-switcher-1.3.0.zip + local-dsh-skin-switcher-1.3.0.tgz
 ```
 
 ## 新增一种风格
@@ -119,7 +80,6 @@ dist/                 # 分发产物：dsh-skin-switcher-1.3.0.zip + local-dsh-s
 ## 测试
 
 ```bash
-cd D:\Projects\personal\deepseek-harness\dsh-skin-switcher
 node test/harness.mjs
 ```
 
