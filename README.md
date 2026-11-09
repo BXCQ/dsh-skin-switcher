@@ -2,6 +2,14 @@
 
 给 DeepSeek Harness Web/GUI 加一个**左侧边栏图标**，点开即是一面「风格墙」：十一种整体视觉风格，一键切换，全应用生效。
 
+## 安装
+
+```bash
+dsh plugin --profile desktop add git+https://github.com/BXCQ/dsh-skin-switcher.git
+```
+
+装完刷新页面（F5），左侧边栏会出现调色板图标。也可以把仓库 clone 到本地，在插件管理器里填该目录的绝对路径。
+
 ## 十一种风格
 
 | 风格 | id | 观感 |
@@ -49,6 +57,8 @@ git remote add origin https://github.com/BXCQ/dsh-skin-switcher.git && git push 
 ```
 
 对方：`dsh plugin --profile desktop add git+https://github.com/BXCQ/dsh-skin-switcher.git`
+
+> 若 github.com:443 被网络阻断（国内常见），改用 SSH 形式：git+ssh://git@github.com/BXCQ/dsh-skin-switcher.git（对方需在 GitHub 配好 SSH key）；本仓库就是用 SSH 推送验证过的。
 
 `@local/…` 这个包名走 git/目录安装完全没问题；只有发 npm 才需要换成公开名（见下）。
 
